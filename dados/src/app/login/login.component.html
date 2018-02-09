@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row registro">
+    <div class="col-12">
+      <h1>Introduce tu nombre de usuario</h1>
+    </div>
+    <div class="col-12">
+      <input [(ngModel)]="nickname" type="text">
+    </div>
+    <div class="col-12">
+      <button (click)="acceder()" type="button" class="btn btn-light" routerLinkActive="active"
+              [routerLink]="['/menu']">Log-in
+      </button>
+    </div>
+  </div>
+</div>
