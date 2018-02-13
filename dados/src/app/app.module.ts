@@ -10,6 +10,7 @@ import {ChatComponent} from './chat/chat.component';
 import {UsersComponent} from './users/users.component';
 import {PartidaComponent} from './partida/partida.component';
 import { ChatpartidaComponent } from './chatpartida/chatpartida.component';
+import { GameComponent } from './game/game.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -28,7 +29,8 @@ export const routing = RouterModule.forRoot(routes);
     ChatComponent,
     UsersComponent,
     PartidaComponent,
-    ChatpartidaComponent
+    ChatpartidaComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,

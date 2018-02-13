@@ -7,13 +7,14 @@ import {ServicioService} from "../servicio.service";
   styleUrls: ['./partida.component.css']
 })
 export class PartidaComponent implements OnInit {
+  sala: string;
 
   constructor(private union: ServicioService) {
   }
 
   ngOnInit() {
     this.union.getSala().subscribe(data => {
-      console.log(data);
+      this.sala = data.sala;
     });
   }
 

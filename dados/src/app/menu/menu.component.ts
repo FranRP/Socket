@@ -20,6 +20,7 @@ export class MenuComponent implements OnInit {
   }
 
   iniciar() {
+    this.union.sendUsuarioGame();
     this.union.sendPartida();
   }
 
