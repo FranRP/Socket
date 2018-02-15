@@ -1,1 +1,1 @@
-web: cd dados/server && npm install && node index.js
+web: node dados/server/index.js
