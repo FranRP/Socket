@@ -19,6 +19,9 @@ export class GameComponent implements OnInit {
   totalgame: any;
   menuadivina: string = 'off';
   reset: string = 'resetearOff';
+  ganador: string;
+  resultados = [];
+  cancelar: string;
 
   titulo: string = 'Debes esperar al resto de jugadores para jugar';
 
@@ -42,6 +45,7 @@ export class GameComponent implements OnInit {
       if (data[0].user == this.nombre) {
         this.union.sendSumaScore();
       }
+      this.resultados.push(data[0]);
     });
 
     this.union.getReset().subscribe(data => {
@@ -52,6 +56,23 @@ export class GameComponent implements OnInit {
         this.menuadivina = 'off';
         $('.jugando').css("display", 'block');
         $('.espera').css("display", 'none');
+      }
+    });
+
+    this.union.getFinal().subscribe(data => {
+      this.ganador = data.ganador;
+      $('.mostrar').hide();
+      $('.fin').show();
+      $('.final').hide();
+    });
+
+    this.union.getPartidaCancelada().subscribe(data => {
+      this.cancelar = data;
+      if (this.cancelar == 'cancelada') {
+        $('.mostrar').hide();
+        $('.fin').show();
+        $('.final').hide();
+        $('.fin h2').text('Un usuario ha abandonado la partida, vuelve al menú');
       }
     });
 
@@ -72,11 +93,16 @@ export class GameComponent implements OnInit {
   }
 
   sendResultado() {
-    let resultado = this.totalgame - $('select').val();
+    let resultado = Math.abs(this.totalgame - $('select').val());
     console.log(resultado);
     $('.jugando').css("display", 'none');
     $('.espera').css("display", 'block');
     this.union.sendRespuesta(resultado);
+  }
+
+  verresultados() {
+    console.log(this.resultados);
+    $('.resultados').fadeIn();
   }
 
 }

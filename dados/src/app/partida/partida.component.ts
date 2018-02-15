@@ -8,6 +8,7 @@ import {ServicioService} from "../servicio.service";
 })
 export class PartidaComponent implements OnInit {
   sala: string;
+  name: string;
 
   constructor(private union: ServicioService) {
   }
@@ -16,6 +17,8 @@ export class PartidaComponent implements OnInit {
     this.union.getSala().subscribe(data => {
       this.sala = data.sala;
     });
+    this.name = this.union.usuario;
+
   }
 
 }

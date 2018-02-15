@@ -16,6 +16,7 @@ const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'menu', component: MenuComponent},
   {path: 'partida', component: PartidaComponent},
+  {path: 'login', component: LoginComponent},
   {path: '**', component: LoginComponent}
 ]
 

@@ -4,6 +4,8 @@
 
 button {
   font-size: 20px;
+  background: none;
+  background-color: inherit;
 }
 
 .dados {
@@ -45,3 +47,15 @@ select {
 .inactivo, .esperar {
   display: none;
 }
+
+.fin {
+  display: none;
+}
+
+.resultados {
+  display: none;
+  justify-content: center;
+  height: 300px;
+  overflow: scroll;
+}
+

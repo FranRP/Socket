@@ -6,6 +6,7 @@ import * as io from 'socket.io-client';
 export class ServicioService {
   private url = 'http://localhost:3000';
   private socket;
+  public conectado: any = false;
   public usuario;
 
   constructor() {
@@ -28,6 +29,14 @@ export class ServicioService {
     });
   }
 
+  getPartidaCancelada(): Observable<any> {
+    return Observable.create((observer) => {
+      this.socket.on('partida-cancelada', (data) => {
+        observer.next(data);
+      });
+    });
+  }
+
   sendPartida() {
     this.socket.emit('nuevapartida');
   }
@@ -37,7 +46,12 @@ export class ServicioService {
   }
 
   public sendUsuario(user) {
-    this.socket.emit('nuevousuario', user);
+    if (!this.conectado) {
+      this.socket.emit('nuevousuario', user);
+      this.conectado = true;
+    } else {
+      this.socket.emit('recargar-lista-usuarios', user);
+    }
   }
 
   public sendLanzamiento(valor) {
@@ -64,6 +78,15 @@ export class ServicioService {
   public getReset(): Observable<any> {
     return Observable.create((observer) => {
       this.socket.on('resetear-ronda', (activador) => {
+        observer.next(activador);
+      });
+    });
+  }
+
+
+  public getFinal(): Observable<any> {
+    return Observable.create((observer) => {
+      this.socket.on('partida-terminada', (activador) => {
         observer.next(activador);
       });
     });

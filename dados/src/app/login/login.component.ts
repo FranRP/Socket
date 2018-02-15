@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   }
 
   acceder() {
+
     if (this.nickname == "") {
       this.nickname = 'Anónimo';
     }

@@ -18,13 +18,13 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
     this.name = this.union.usuario;
     this.union.getMessage().subscribe(data => {
+      console.log(data);
       this.arrayMensajes.push(data);
     });
   }
 
   sendMessage() {
     this.union.sendMessage({"nombre": this.name, "mensaje": this.message});
-    console.log(this.arrayMensajes);
     this.message = '';
   }
 
