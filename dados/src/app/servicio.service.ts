@@ -51,6 +51,7 @@ export class ServicioService {
       this.conectado = true;
     } else {
       this.socket.emit('recargar-lista-usuarios', user);
+      this.socket.emit('salir-sala');
     }
   }
 

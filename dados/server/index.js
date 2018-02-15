@@ -42,6 +42,10 @@ io.on('connection', (socket) => {
       io.emit('mensajechat', message);
     });
 
+    socket.on('salir-sala', function () {
+      socket.leave("sala-" + socket.sala);
+    })
+
 
     socket.on('nuevapartida', function () {
 
@@ -51,6 +55,7 @@ io.on('connection', (socket) => {
       salaUsers[roomno - 1].push(socket.username);
       io.to("sala-" + roomno).emit('conectarSala', {'usuario': salaUsers[roomno - 1], 'sala': roomno});
       if (salaUsers[roomno - 1].length == 3) {
+        roomno++;
         io.to("sala-" + socket.sala).emit('comienza', 'activar');
         salaUsers.push([]);
         respuestas.push([]);
@@ -60,6 +65,7 @@ io.on('connection', (socket) => {
       } else {
         io.to("sala-" + socket.sala).emit('comienza', 'desactivar');
       }
+      console.log(roomno + ' esta es la sala');
       socket.on('mensaje-sala', (message) => {
         io.to("sala-" + socket.sala).emit('mensaje-chat', {'usuario': socket.username, 'mensaje': message});
       });
@@ -142,7 +148,7 @@ io.on('connection', (socket) => {
     users = users.filter(user => user != socket.username);
     io.emit('usuarios', users);
     salaUsers[socket.sala - 1] = salaUsers[roomno - 1].filter(user => user != socket.username);
-    io.to("sala-" + socket.sala).emit('conectarSala', {'usuario': salaUsers[roomno - 1], 'sala': roomno});
+    // io.to("sala-" + socket.sala).emit('conectarSala', {'usuario': salaUsers[roomno - 1], 'sala': roomno});
     io.to("sala-" + socket.sala).emit('partida-cancelada', 'cancelada');
   });
 
