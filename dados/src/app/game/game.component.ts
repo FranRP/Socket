@@ -73,6 +73,7 @@ export class GameComponent implements OnInit {
         $('.fin').show();
         $('.final').hide();
         $('.fin h2').text('Un usuario ha abandonado la partida, vuelve al menú');
+        $('.jugando').hide();
       }
     });
 

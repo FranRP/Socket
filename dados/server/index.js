@@ -38,6 +38,12 @@ io.on('connection', (socket) => {
     if (users.indexOf(user) == -1) {
       users.push(user);
     }
+
+    if (salaUsers[socket.sala - 1].indexOf(socket.username) != -1) {
+      salaUsers[socket.sala - 1] = salaUsers[roomno - 1].filter(user => user != socket.username);
+      io.to("sala-" + socket.sala).emit('partida-cancelada', 'cancelada');
+    }
+
     socket.username = user;
     socket.score = 0;
     io.emit('usuarios', users);
