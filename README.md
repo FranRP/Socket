@@ -3,4 +3,4 @@
 Proyecto SOCKET.IO Realizado con Angular, Bootstrap y Jquery.
 
 
-Juego en producción: dados-franrp.herokuapp.com
+Juego en producción: <a href="dados-franrp.herokuapp.com">Juego de dados (Chinos)</a>
