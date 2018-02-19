@@ -16,10 +16,16 @@ export class ServicioService {
   }
 
   public sendMessage(message) {
+
     this.socket.emit('new-message', message);
   }
 
+  public sendEntroMenu() {
+    this.socket.emit('entro-menu');
+  }
+
   public sendMensajeSala(message) {
+    console.log("SERVICIO ENVIA " + message)
     this.socket.emit('mensaje-sala', message);
   }
 

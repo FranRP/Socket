@@ -17,7 +17,9 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
     this.nombre = this.union.usuario;
     this.union.sendUsuario(this.nombre);
+    this.union.sendEntroMenu();
   }
+
 
   iniciar() {
     this.union.sendUsuarioGame();

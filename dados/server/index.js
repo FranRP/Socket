@@ -65,7 +65,15 @@ io.on('connection', (socket) => {
 
     socket.on('salir-sala', function () {
       socket.leave("sala-" + socket.sala);
-    })
+    });
+
+    socket.on('entro-menu', function () {
+      socket.removeAllListeners('mensaje-sala');
+      socket.removeAllListeners('lanzardados');
+      socket.removeAllListeners('respuesta');
+      socket.removeAllListeners('sumarScore');
+      socket.removeAllListeners('respuesta');
+    });
 
 
     socket.on('nuevapartida', function () {
@@ -88,6 +96,7 @@ io.on('connection', (socket) => {
       }
       console.log(roomno + ' esta es la sala');
       socket.on('mensaje-sala', (message) => {
+        console.log('dsasa  ' + message);
         io.to("sala-" + socket.sala).emit('mensaje-chat', {'usuario': socket.username, 'mensaje': message});
       });
       socket.on('lanzardados', (valor) => {
@@ -118,7 +127,6 @@ io.on('connection', (socket) => {
               ganadoressala[socket.sala - 1].push(elemento);
             }
           }
-          console.log(ganadoressala[socket.sala - 1].length, 'ieee');
           if (ganadoressala[socket.sala - 1].length == 1) {
             io.to("sala-" + socket.sala).emit('ganador-ronda', ganadoressala[socket.sala - 1]);
           } else {

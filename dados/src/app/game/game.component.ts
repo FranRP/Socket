@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ServicioService} from "../servicio.service";
 
 declare var jquery: any;
@@ -9,7 +9,7 @@ declare var $: any;
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
   nombre: string;
   posibles = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36];
   dadouno: any;
@@ -25,22 +25,32 @@ export class GameComponent implements OnInit {
 
   titulo: string = 'Debes esperar al resto de jugadores para jugar';
 
+  uno: any;
+  dos: any;
+  tres: any;
+  cuatro: any;
+  cinco: any;
+  seis: any;
+
+
   constructor(private union: ServicioService) {
+
   }
+
 
   ngOnInit() {
     this.nombre = this.union.usuario;
-    this.union.getAviso().subscribe(data => {
+    this.uno = this.union.getAviso().subscribe(data => {
       this.comienzo = data;
       if (this.comienzo == 'activar') {
         this.titulo = '¡Jugadores listos, ya puedes jugar!'
       }
     });
-    this.union.getAdivinanza().subscribe(data => {
+    this.dos = this.union.getAdivinanza().subscribe(data => {
       this.totalgame = data.value;
       this.menuadivina = data.estado;
     });
-    this.union.getGanadorRonda().subscribe(data => {
+    this.tres = this.union.getGanadorRonda().subscribe(data => {
       console.log(data);
       if (data[0].user == this.nombre) {
         this.union.sendSumaScore();
@@ -48,7 +58,7 @@ export class GameComponent implements OnInit {
       this.resultados.push(data[0]);
     });
 
-    this.union.getReset().subscribe(data => {
+    this.cuatro = this.union.getReset().subscribe(data => {
       this.reset = data;
       if (this.reset == 'resetearOn') {
         $('.mostrar').hide();
@@ -59,14 +69,14 @@ export class GameComponent implements OnInit {
       }
     });
 
-    this.union.getFinal().subscribe(data => {
+    this.cinco = this.union.getFinal().subscribe(data => {
       this.ganador = data.ganador;
       $('.mostrar').hide();
       $('.fin').show();
       $('.final').hide();
     });
 
-    this.union.getPartidaCancelada().subscribe(data => {
+    this.seis = this.union.getPartidaCancelada().subscribe(data => {
       this.cancelar = data;
       if (this.cancelar == 'cancelada') {
         $('.mostrar').hide();
@@ -78,6 +88,16 @@ export class GameComponent implements OnInit {
     });
 
 
+  }
+
+  ngOnDestroy() {
+    console.log('funciona');
+    this.uno.unsubscribe();
+    this.dos.unsubscribe();
+    this.tres.unsubscribe();
+    this.cuatro.unsubscribe();
+    this.cinco.unsubscribe();
+    this.seis.unsubscribe();
   }
 
   lanzar() {
