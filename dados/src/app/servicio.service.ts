@@ -27,9 +27,13 @@ export class ServicioService {
     }
   }
 
+  sendComprobador(nick) {
+    this.socket.emit('añadir-nombres', nick);
+  }
+
   getArrayNombres(): Observable<any> {
     return Observable.create((observer) => {
-      this.socket.on('array-nombres', (data) => {
+      this.socket.on('aviso', (data) => {
         observer.next(data);
       });
     });

@@ -37,9 +37,18 @@ io.on('connection', (socket) => {
   console.log('user connected');
 
   socket.on('añadir-nombres', nombre => {
-    nombres.push(nombre);
-    console.log(nombres + ' se ha añadido');
-    io.emit('array-nombres', nombres);
+    if (nombres.indexOf(nombre) == -1) {
+      if (nombre != "") {
+        nombres.push(nombre);
+        console.log(nombres + ' --------------------------------------');
+        socket.emit('aviso', 'disponible');
+      } else {
+        socket.emit('aviso', 'vacio');
+      }
+    } else {
+      console.log('no disponible');
+      socket.emit('aviso', 'no');
+    }
   });
 
   socket.on('recargar-lista-usuarios', user => {
@@ -68,7 +77,10 @@ io.on('connection', (socket) => {
     io.emit('usuarios', users);
 
     socket.on('new-message', (message) => {
-      io.emit('mensajechat', message);
+      if ((message.mensaje != '') && (message.mensaje != undefined)) {
+        console.log(message.mensaje + ' ----sssssssssssssssss')
+        io.emit('mensajechat', message);
+      }
     });
 
     socket.on('salir-sala', function () {
@@ -104,8 +116,9 @@ io.on('connection', (socket) => {
       }
       console.log(roomno + ' esta es la sala');
       socket.on('mensaje-sala', (message) => {
-        console.log('dsasa  ' + message);
-        io.to("sala-" + socket.sala).emit('mensaje-chat', {'usuario': socket.username, 'mensaje': message});
+        if ((message != '') && (message != undefined)) {
+          io.to("sala-" + socket.sala).emit('mensaje-chat', {'usuario': socket.username, 'mensaje': message});
+        }
       });
       socket.on('lanzardados', (valor) => {
         lanzamientodados[socket.sala - 1][0].total = parseInt(lanzamientodados[socket.sala - 1][0].total) + valor;
@@ -187,6 +200,7 @@ io.on('connection', (socket) => {
     salaUsers[socket.sala - 1] = salaUsers[roomno - 1].filter(user => user != socket.username);
     // io.to("sala-" + socket.sala).emit('conectarSala', {'usuario': salaUsers[roomno - 1], 'sala': roomno});
     io.to("sala-" + socket.sala).emit('partida-cancelada', 'cancelada');
+    nombres = nombres.filter(user => user != socket.username);
   });
 
 });

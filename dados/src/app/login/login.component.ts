@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ServicioService} from "../servicio.service";
 
+declare var jquery: any;
+declare var $: any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,25 +12,41 @@ import {ServicioService} from "../servicio.service";
 export class LoginComponent implements OnInit {
 
   nickname: string = "";
+  comprobador: string;
 
   constructor(private union: ServicioService) {
   }
 
   ngOnInit() {
     this.union.getArrayNombres().subscribe(data => {
-      this.union.arrayUsers = data;
-      console.log('-----------------------------')
-      console.log(this.union.arrayUsers);
+      console.log(data);
+      this.comprobador = data;
+      if (this.comprobador == 'no') {
+        $('.no-disponible').css('display', 'block');
+        $('.no-disponible p').css('color', 'red');
+        $('.no-disponible p').text('Nombre no disponible');
+      } else if (this.comprobador == 'vacio') {
+        $('.no-disponible').css('display', 'block');
+        $('.no-disponible p').css('color', 'red');
+        $('.no-disponible p').text('Debes introducir un nombre');
+      } else {
+        $('.no-disponible').css('display', 'block');
+        $('.no-disponible p').css('color', 'green');
+        $('.no-disponible p').text('Nombre disponible, accede al juego');
+        $('.entrar').attr('disabled', false);
+        $('.poner-name').attr('disabled', true);
+        $('.comprobador').attr('disabled', true);
+      }
     });
   }
 
   acceder() {
-
-    if (this.nickname == "") {
-      this.nickname = 'Anónimo';
-    }
-    this.union.modificaNombre(this.nickname);
+    this.union.usuario = this.nickname;
     this.nickname = '';
+  }
+
+  comprobar() {
+    this.union.sendComprobador(this.nickname);
   }
 
 }
