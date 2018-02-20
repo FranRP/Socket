@@ -31,8 +31,16 @@ var respuestas = [[]];
 var puntuacionparaganar = [];
 var ganadoressala = [[]];
 
+var nombres = [];
+
 io.on('connection', (socket) => {
   console.log('user connected');
+
+  socket.on('añadir-nombres', nombre => {
+    nombres.push(nombre);
+    console.log(nombres + ' se ha añadido');
+    io.emit('array-nombres', nombres);
+  });
 
   socket.on('recargar-lista-usuarios', user => {
     if (users.indexOf(user) == -1) {

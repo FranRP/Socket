@@ -14,6 +14,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.union.getArrayNombres().subscribe(data => {
+      this.union.arrayUsers = data;
+      console.log('-----------------------------')
+      console.log(this.union.arrayUsers);
+    });
   }
 
   acceder() {
@@ -21,7 +26,7 @@ export class LoginComponent implements OnInit {
     if (this.nickname == "") {
       this.nickname = 'Anónimo';
     }
-    this.union.usuario = this.nickname;
+    this.union.modificaNombre(this.nickname);
     this.nickname = '';
   }
 

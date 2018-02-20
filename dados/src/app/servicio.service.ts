@@ -10,9 +10,29 @@ export class ServicioService {
   private socket;
   public conectado: any = false;
   public usuario;
+  public arrayUsers = [];
 
   constructor() {
     this.socket = io(this.url);
+  }
+
+  modificaNombre(nickname) {
+    if (this.arrayUsers.indexOf(nickname) == -1) {
+      this.usuario = nickname;
+      this.socket.emit('añadir-nombres', this.usuario);
+
+    } else {
+      this.usuario = nickname + Math.floor(Math.random() * (99999 - 1) + 1);
+      this.socket.emit('añadir-nombres', this.usuario);
+    }
+  }
+
+  getArrayNombres(): Observable<any> {
+    return Observable.create((observer) => {
+      this.socket.on('array-nombres', (data) => {
+        observer.next(data);
+      });
+    });
   }
 
   public sendMessage(message) {
